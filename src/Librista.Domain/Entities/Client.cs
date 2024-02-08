@@ -17,4 +17,6 @@ public class Client : Auditable
     
     public long AddressId { get; set; }
     public Address Address { get; set; } = null!;
+
+    public List<BorrowingRecord> BorrowingRecords { get; set; } = [];
 }

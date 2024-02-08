@@ -21,9 +21,49 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("Librista");
 
+        builder.Entity<Address>()
+            .HasOne(address => address.City)
+            .WithMany()
+            .HasForeignKey(address => address.CityId);
+        
         builder.Entity<Author>()
             .HasMany(author => author.Books)
             .WithMany(book => book.Authors)
             .UsingEntity<AuthorBook>();
+
+        builder.Entity<Book>(entity =>
+        {
+            entity
+                .HasOne(book => book.Genre)
+                .WithMany(genre => genre.Books)
+                .HasForeignKey(book => book.GenreId);
+
+            entity
+                .HasOne(book => book.Publisher)
+                .WithMany(publisher => publisher.Books)
+                .HasForeignKey(book => book.PublisherId);
+        });
+        builder.Entity<BorrowingRecord>(entity =>
+        {
+            entity
+                .HasOne(record => record.Book)
+                .WithMany(book => book.BorrowingRecords)
+                .HasForeignKey(record => record.BookId);
+
+            entity
+                .HasOne(record => record.Client)
+                .WithMany(client => client.BorrowingRecords)
+                .HasForeignKey(record => record.ClientId);
+        });
+
+        builder.Entity<City>()
+            .HasOne(city => city.Country)
+            .WithMany(country => country.Cities)
+            .HasForeignKey(city => city.CountryId);
+
+        builder.Entity<Client>()
+            .HasOne(client => client.Address)
+            .WithMany()
+            .HasForeignKey(client => client.AddressId);
     }
 }

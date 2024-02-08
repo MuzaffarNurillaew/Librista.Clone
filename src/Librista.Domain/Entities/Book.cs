@@ -23,5 +23,6 @@ public class Book : Auditable
     public long PublisherId { get; set; }
     public Publisher Publisher { get; set; } = null!;
     
-    public List<Author> Authors { get; set; } = null!;
+    public List<Author> Authors { get; set; } = [];
+    public List<BorrowingRecord> BorrowingRecords { get; set; } = [];
 }
