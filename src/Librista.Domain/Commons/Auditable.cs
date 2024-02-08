@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Librista.Domain.Commons;
 
 public abstract class Auditable
@@ -5,6 +7,7 @@ public abstract class Auditable
     /// <summary>
     /// Gets or sets the id of the entity
     /// </summary>
+    [Key]
     public long Id { get; set; }
     /// <summary>
     /// Gets or sets the created date of the entity

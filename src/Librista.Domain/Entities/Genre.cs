@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using Librista.Domain.Commons;
 
 namespace Librista.Domain.Entities;
@@ -5,6 +6,7 @@ namespace Librista.Domain.Entities;
 /// <inheritdoc cref="Auditable"/>
 public class Genre : Auditable
 {
-    public string Name { get; set; }
-    public List<Book> Books { get; set; }
+    [MaxLength(20)]
+    public required string Name { get; set; }
+    public List<Book> Books { get; set; } = [];
 }
