@@ -1,5 +1,8 @@
+using AutoMapper;
+using Librista.Api.Models.DTOs.Genres;
 using Librista.Data.Contexts;
 using Librista.Domain.Entities;
+using Librista.Service.Filters;
 using Librista.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,25 +11,35 @@ namespace Librista.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GenresController(LibristaContext context, IGenreService genreService) : ControllerBase
+public class GenresController(IGenreService genreService, IMapper mapper) : ControllerBase
 {
     [HttpPost]
-    public async Task<IActionResult> CreateAsync()
+    public async Task<ActionResult<GenreResultDto>> Create(GenreCreationDto genre, CancellationToken cancellationToken)
     {
-        var genre = new Genre()
-        {
-            Name = "Fiction"
-        };
-        var result = await context.Genres.AddAsync(genre);
-        await context.SaveChangesAsync();
-        return Ok(result.Entity);
+        throw null;
+    }
+
+    [HttpGet("{id:long}")]
+    public async Task<ActionResult<GenreResultDto>> GetById(long id, CancellationToken cancellationToken)
+    {
+        throw null;
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetAsync(long id)
+    public async Task<ActionResult<List<GenreResultDto>>> GetAll([FromQuery] GenreFilter filter, CancellationToken cancellationToken)
     {
-        var result = await context.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
+        throw null;
+    }
 
-        return Ok(result);
+    [HttpPut("{id:long}")]
+    public async Task<ActionResult<GenreResultDto>> Update(long id, GenreUpdateDto genre, CancellationToken cancellationToken)
+    {
+        throw null;
+    }
+
+    [HttpDelete("{id:long}")]
+    public async Task<ActionResult<bool>> Delete(long id, CancellationToken cancellationToken)
+    {
+        throw null;
     }
 }
