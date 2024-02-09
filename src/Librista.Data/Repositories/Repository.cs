@@ -1,6 +1,7 @@
 using System.Linq.Expressions;
 using Librista.Data.Contexts;
 using Librista.Domain.Commons;
+using Librista.Domain.Exceptions;
 using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Data.Repositories;
@@ -32,11 +33,14 @@ public class Repository(LibristaContext context) : IRepository
         }
     }
 
-    public async Task<T> SelectAsync<T>(Expression<Func<T, bool>> expression, bool shouldTrack = true, string[]? includes = null, CancellationToken cancellationToken = default)
+    public async Task<T> SelectAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false, bool shouldTrack = true, string[]? includes = null, CancellationToken cancellationToken = default)
         where T : Auditable
     {
         var set = context.Set<T>();
         var entityQuery = set.Where(expression);
+        // throws exception if not found
+        if (!await entityQuery.AnyAsync(cancellationToken: cancellationToken) && shouldThrowException)
+            throw new NotFoundException<T>();
         entityQuery = shouldTrack ? entityQuery.AsTracking() : entityQuery.AsNoTracking();
         if (includes is not null && includes.Length != 0)
         {

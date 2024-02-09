@@ -10,4 +10,10 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="FluentValidation">
+      <HintPath>..\..\..\..\.nuget\packages\fluentvalidation\11.9.0\lib\net8.0\FluentValidation.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

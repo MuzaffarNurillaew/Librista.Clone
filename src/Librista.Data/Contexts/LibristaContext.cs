@@ -6,6 +6,7 @@ namespace Librista.Data.Contexts;
 
 public class LibristaContext(DbContextOptions<LibristaContext> options) : DbContext(options)
 {
+    #region Tables
     public DbSet<Address> Addresses => Set<Address>();
     public DbSet<Author> Authors => Set<Author>();
     public DbSet<Book> Books => Set<Book>();
@@ -15,12 +16,25 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
     public DbSet<Country> Countries => Set<Country>();
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
+    #endregion
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("Librista");
 
+        #region Global query filters 
+        builder.Entity<Address>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<Author>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<Book>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<BorrowingRecord>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<City>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<Country>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<Genre>().HasQueryFilter(address => !address.IsDeleted);
+        builder.Entity<Publisher>().HasQueryFilter(address => !address.IsDeleted);
+        #endregion
+
+        #region Fluent API
         builder.Entity<Address>(entity =>
         {
             entity
@@ -28,7 +42,6 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
                 .WithMany()
                 .HasForeignKey(address => address.CityId);
         });
-            
         
         builder.Entity<Author>()
             .HasMany(author => author.Books)
@@ -82,5 +95,6 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .HasOne(client => client.Address)
             .WithMany()
             .HasForeignKey(client => client.AddressId);
+        #endregion
     }
 }
