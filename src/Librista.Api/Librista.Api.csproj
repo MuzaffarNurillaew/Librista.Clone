@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Librista.Service\Librista.Service.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\" />
+  </ItemGroup>
+
 </Project>

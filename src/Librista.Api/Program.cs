@@ -1,28 +1,9 @@
-using Librista.Data.Contexts;
-using Librista.Service;
-using Microsoft.EntityFrameworkCore;
+using Librista.Api.Configurations;
 
 var builder = WebApplication.CreateBuilder(args);
+await builder.ConfigureAsync();
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-builder.Services.AddControllers();
-builder.Services.AddDbContext<LibristaContext>(options =>
-{
-    options.UseSqlite("Data Source=Application.db");
-});
 var app = builder.Build();
+await app.ConfigureAsync();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
-
-app.MapControllers();
-app.UseHttpsRedirection();
-
-app.Run();
+await app.RunAsync();

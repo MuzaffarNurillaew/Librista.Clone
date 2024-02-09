@@ -9,10 +9,11 @@ public abstract class Auditable
     /// </summary>
     [Key]
     public long Id { get; set; }
+
     /// <summary>
     /// Gets or sets the created date of the entity
     /// </summary>
-    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.UtcNow;
+    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
     /// <summary>
     /// Gets or sets the updated date of the entity
     /// </summary>
