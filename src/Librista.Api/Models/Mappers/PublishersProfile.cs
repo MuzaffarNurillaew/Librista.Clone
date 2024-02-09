@@ -4,9 +4,9 @@ using Librista.Domain.Entities;
 
 namespace Librista.Api.Models.Mappers;
 
-public class PublisherProfile : Profile
+public class PublishersProfile : Profile
 {
-    public PublisherProfile()
+    public PublishersProfile()
     {
         CreateMap<PublisherCreationDto, Publisher>();
         CreateMap<Publisher, PublisherResultDto>();
