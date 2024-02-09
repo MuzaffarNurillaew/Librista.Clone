@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Librista.Domain.Commons;
+using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Domain.Entities;
 
@@ -15,6 +16,8 @@ public class Client : Auditable
     [MaxLength(30)]
     public required string Email { get; set; }
     
+    [Precision(18, 2)]
+    public decimal TotalFines { get; set; } = 0;
     public long AddressId { get; set; }
     public Address Address { get; set; } = null!;
 

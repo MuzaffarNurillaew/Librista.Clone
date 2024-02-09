@@ -1,4 +1,7 @@
+using Librista.Data.Repositories;
 using Librista.Data.Contexts;
+using Librista.Service.Interfaces;
+using Librista.Service.Services;
 using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Api.Configurations;
@@ -6,7 +9,8 @@ namespace Librista.Api.Configurations;
 public partial class HostConfiguration
 {
     #region WebApplication extensions
-    public static WebApplication UseDeveloperTools(this WebApplication app)
+
+    private static WebApplication UseDeveloperTools(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
         {
@@ -17,31 +21,33 @@ public partial class HostConfiguration
         return app;
     }
 
-    public static WebApplication UseExposers(this WebApplication app)
+    private static WebApplication UseExposers(this WebApplication app)
     {
         app.MapControllers();
         return app;
     }
 
-    public static WebApplication UseCors(this WebApplication app)
+    private static WebApplication UseCors(this WebApplication app)
     {
         app.UseCors("LibristaOrigin");
         return app;
     }
 
-    public static WebApplication UseRequestContextTools(this WebApplication app)
+    private static WebApplication UseRequestContextTools(this WebApplication app)
     {
         app.UseHttpsRedirection();
         return app;
     }
-    public static WebApplication UseOthers(this WebApplication app)
+
+    private static WebApplication UseOthers(this WebApplication app)
     {
         return app;
     }
     #endregion
 
     #region WebApplicationBuilder extensions
-    public static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
+
+    private static WebApplicationBuilder AddExposers(this WebApplicationBuilder builder)
     {
         builder.Services.AddRouting(options =>
         {
@@ -54,7 +60,7 @@ public partial class HostConfiguration
         return builder;
     }
 
-    public static WebApplicationBuilder AddDeveloperTools(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddDeveloperTools(this WebApplicationBuilder builder)
     {
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
@@ -62,7 +68,7 @@ public partial class HostConfiguration
         return builder;
     }
 
-    public static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
         {
@@ -76,7 +82,7 @@ public partial class HostConfiguration
         return builder;
     }
 
-    public static WebApplicationBuilder AddDataBaseProvider(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddDataBaseProvider(this WebApplicationBuilder builder)
     {
         builder.Services.AddDbContext<LibristaContext>(options =>
         {
@@ -86,12 +92,33 @@ public partial class HostConfiguration
         return builder;
     }
 
-    public static WebApplicationBuilder AddRequestContextTools(this WebApplicationBuilder builder)
+    private static WebApplicationBuilder AddStorageDependencies(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IRepository, Repository>();
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddServiceDependencies(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddScoped<IAddressService, AddressService>();
+        builder.Services.AddScoped<IAuthorService, AuthorService>();
+        builder.Services.AddScoped<IBookService, BookService>();
+        builder.Services.AddScoped<IBorrowingRecordService, BorrowingRecordService>();
+        builder.Services.AddScoped<ICityService, CityService>();
+        builder.Services.AddScoped<ICountryService, CountryService>();
+        builder.Services.AddScoped<IGenreService, GenreService>();
+        builder.Services.AddScoped<IPublisherService, PublisherService>();
+
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddRequestContextTools(this WebApplicationBuilder builder)
     {
         builder.Services.AddHttpContextAccessor();
         return builder;
     }
-    public static WebApplicationBuilder AddOthers(this WebApplicationBuilder builder)
+
+    private static WebApplicationBuilder AddOthers(this WebApplicationBuilder builder)
     {
         return builder;
     }

@@ -1,5 +1,6 @@
 using Librista.Data.Contexts;
 using Librista.Domain.Entities;
+using Librista.Service.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -7,15 +8,8 @@ namespace Librista.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class GenresController : ControllerBase
+public class GenresController(LibristaContext context, IGenreService genreService) : ControllerBase
 {
-    private readonly LibristaContext _context;
-
-    public GenresController(LibristaContext context)
-    {
-        _context = context;
-    }
-
     [HttpPost]
     public async Task<IActionResult> CreateAsync()
     {
@@ -23,15 +17,15 @@ public class GenresController : ControllerBase
         {
             Name = "Fiction"
         };
-        var result = await _context.Genres.AddAsync(genre);
-        await _context.SaveChangesAsync();
+        var result = await context.Genres.AddAsync(genre);
+        await context.SaveChangesAsync();
         return Ok(result.Entity);
     }
 
     [HttpGet]
     public async Task<IActionResult> GetAsync(long id)
     {
-        var result = await _context.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
+        var result = await context.Genres.FirstOrDefaultAsync(genre => genre.Id == id);
 
         return Ok(result);
     }

@@ -1,8 +1,9 @@
 using Librista.Data.Repositories;
+using Librista.Service.Interfaces;
 
 namespace Librista.Service.Services;
 
-public class PublisherService(IRepository repository)
+public class PublisherService(IRepository repository) : IPublisherService
 {
     
 }
