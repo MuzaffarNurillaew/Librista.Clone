@@ -73,7 +73,10 @@ public class Repository(LibristaContext context) : IRepository
         where T : Auditable
     {
         var set = context.Set<T>();
-        var entityToUpdate = await SelectAsync(expression, shouldThrowException: shouldThrowException, cancellationToken: cancellationToken);
+        var entityToUpdate = await SelectAsync(expression,
+            shouldThrowException: shouldThrowException,
+            cancellationToken: cancellationToken);
+        entity.Id = entityToUpdate.Id;
         context.Entry(entity: entityToUpdate).CurrentValues.SetValues(entity);
 
         if (shouldSave)
@@ -84,7 +87,10 @@ public class Repository(LibristaContext context) : IRepository
         return entityToUpdate;
     }
 
-    public async Task<T> DeleteAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false, bool shouldSave = true, CancellationToken cancellationToken = default)
+    public async Task<T> DeleteAsync<T>(Expression<Func<T, bool>> expression,
+        bool shouldThrowException = false,
+        bool shouldSave = true,
+        CancellationToken cancellationToken = default)
         where T : Auditable
     {
         var set = context.Set<T>();

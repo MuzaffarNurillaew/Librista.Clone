@@ -31,7 +31,7 @@ public class CountryService(IRepository repository, IMapper mapper) : ICountrySe
         await repository.InsertManyAsync(countries, cancellationToken: cancellationToken);
     }
 
-    public async Task<Country> GetAsync(long id, bool loadRelations = false, CancellationToken cancellationToken = default)
+    public async Task<Country> GetAsync(long id, bool throwException = true, bool loadRelations = false, CancellationToken cancellationToken = default)
     {
         string[] includes = loadRelations ? [$"{nameof(Country.Cities)}"] : null!;
         var country = await repository.SelectAsync<Country>(country => country.Id == id,

@@ -20,7 +20,10 @@ public class CountriesController(ICountryService countryService, IMapper mapper)
     [HttpGet("{id:long}")]
     public async Task<ActionResult<CountryResultDto>> GetById(long id, CancellationToken cancellationToken, bool loadRelations = false)
     {
-        var country = await countryService.GetAsync(id, loadRelations, cancellationToken);
+        var country = await countryService.GetAsync(id,
+            loadRelations: loadRelations,
+            throwException: true,
+            cancellationToken: cancellationToken);
         var mappedCountry = mapper.Map<CountryResultDto>(country);
         return Ok(mappedCountry);
     }

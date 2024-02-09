@@ -11,6 +11,6 @@ public class AddressesProfile : Profile
     {
         CreateMap<AddressCreationDto, Address>();
         CreateMap<Address, AddressResultDto>();
-        CreateMap<Address, AddressUpdateDto>();
+        CreateMap<AddressUpdateDto, Address>();
     }
 }

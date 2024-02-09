@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 using FluentValidation;
 using Librista.Api.Middlewares;
@@ -8,6 +9,8 @@ using Librista.Service.Interfaces;
 using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Newtonsoft.Json;
+using JsonConverter = System.Text.Json.Serialization.JsonConverter;
 
 namespace Librista.Api.Configurations;
 
@@ -71,7 +74,8 @@ public partial class HostConfiguration
             options.LowercaseQueryStrings = true;
         });
 
-        builder.Services.AddControllers();
+        builder.Services
+            .AddControllers();
 
         return builder;
     }
@@ -89,6 +93,7 @@ public partial class HostConfiguration
             .AddMvc()
             .AddJsonOptions(options =>
             {
+                options.JsonSerializerOptions.PropertyNamingPolicy = JsonNamingPolicy.CamelCase;
                 options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
             });
         return builder;

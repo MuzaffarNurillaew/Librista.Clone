@@ -16,30 +16,62 @@ public class GenresController(IGenreService genreService, IMapper mapper) : Cont
     [HttpPost]
     public async Task<ActionResult<GenreResultDto>> Create(GenreCreationDto genre, CancellationToken cancellationToken)
     {
-        throw null;
+        var mappedGenre = mapper.Map<Genre>(genre);
+        var createdGenre = await genreService.CreateAsync(mappedGenre,
+            cancellationToken: cancellationToken);
+        var resultGenre = mapper.Map<GenreResultDto>(createdGenre);
+
+        return Ok(resultGenre);
     }
 
     [HttpGet("{id:long}")]
-    public async Task<ActionResult<GenreResultDto>> GetById(long id, CancellationToken cancellationToken)
+    public async Task<ActionResult<GenreResultDto>> GetById(long id,
+        CancellationToken cancellationToken,
+        bool loadRelations = false)
     {
-        throw null;
+        var genre = await genreService.GetAsync(id,
+            loadRelations: loadRelations,
+            throwException: true,
+            cancellationToken: cancellationToken);
+
+        return Ok(genre);
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<GenreResultDto>>> GetAll([FromQuery] GenreFilter filter, CancellationToken cancellationToken)
+    public async Task<ActionResult<List<GenreResultDto>>> GetAll([FromQuery] GenreFilter filter,
+        CancellationToken cancellationToken,
+        bool loadRelations = false)
     {
-        throw null;
+        var genres = await genreService.GetAllAsync(filter: filter,
+            loadRelations: loadRelations,
+            throwException: true,
+            track: false,
+            cancellationToken: cancellationToken);
+
+        var mappedGenres = mapper.Map<IEnumerable<GenreResultDto>>(genres);
+        return Ok(mappedGenres);
     }
 
     [HttpPut("{id:long}")]
     public async Task<ActionResult<GenreResultDto>> Update(long id, GenreUpdateDto genre, CancellationToken cancellationToken)
     {
-        throw null;
+        var mappedGenre = mapper.Map<Genre>(genre);
+        var updatedGenre = await genreService.UpdateAsync(id,
+            genre: mappedGenre,
+            throwException: true,
+            cancellationToken: cancellationToken);
+        var resultGenre = mapper.Map<GenreResultDto>(updatedGenre);
+
+        return Ok(resultGenre);
     }
 
     [HttpDelete("{id:long}")]
     public async Task<ActionResult<bool>> Delete(long id, CancellationToken cancellationToken)
     {
-        throw null;
+        _ = await genreService.DeleteAsync(id,
+            throwException: true,
+            cancellationToken: cancellationToken);
+
+        return Ok(true);
     }
 }

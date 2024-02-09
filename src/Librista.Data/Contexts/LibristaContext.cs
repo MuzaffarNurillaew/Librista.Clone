@@ -91,15 +91,15 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .HasOne(city => city.Country)
             .WithMany(country => country.Cities)
             .HasForeignKey(city => city.CountryId);
-
-        builder.Entity<Country>()
-            .HasIndex(country => country.Name)
-            .IsUnique();
         
         builder.Entity<Client>()
             .HasOne(client => client.Address)
             .WithMany()
             .HasForeignKey(client => client.AddressId);
+
+        builder.Entity<Genre>()
+            .HasKey(genre => genre.Id);
+
         #endregion
     }
 }

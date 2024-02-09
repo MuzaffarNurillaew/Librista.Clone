@@ -34,16 +34,14 @@ public class ExceptionHandlingMiddleware(RequestDelegate next)
         context.Response.StatusCode = code;
         await context.Response.WriteAsJsonAsync(new
         {
-            Code = code,
             Message = ex.Message
         });
     }
     private static async Task HandleValidationExceptionAsync(HttpContext context, ValidationException exception)
     {
-        context.Response.StatusCode = StatusCodes.Status400BadRequest;
+        context.Response.StatusCode = StatusCodes.Status422UnprocessableEntity;
         await context.Response.WriteAsJsonAsync(new
         {
-            Code = StatusCodes.Status400BadRequest,
             Message = "Validation failed",
             Errors = exception.Errors.Select(error => new
             {

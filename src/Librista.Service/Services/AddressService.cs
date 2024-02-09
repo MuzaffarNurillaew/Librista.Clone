@@ -1,3 +1,4 @@
+using System.Text;
 using Librista.Data.Repositories;
 using Librista.Domain.Entities;
 using Librista.Service.Filters;
@@ -5,6 +6,7 @@ using Librista.Service.Interfaces;
 using Librista.Service.Validators;
 using Librista.Service.Validators.Utilities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Primitives;
 
 namespace Librista.Service.Services;
 
@@ -13,10 +15,30 @@ public class AddressService(IRepository repository, AddressValidator validator) 
     public async Task<Address> CreateAsync(Address address, CancellationToken cancellationToken = default)
     {
         await validator.ValidateOrPanicAsync(address);
+        // generating address string
+        await GenerateAddressStringAsync(address);
         var createdEntity = await repository.InsertAsync(address, cancellationToken: cancellationToken);
         return createdEntity;
     }
 
+    private async Task GenerateAddressStringAsync(Address address)
+    {
+        var city = await repository.SelectAsync<City>(city => city.Id == address.CityId,
+            includes: [nameof(City.Country)]);
+        var generetedNameSb = new StringBuilder();
+        if (address.BuildingNumber is not null)
+        {
+            generetedNameSb.Append($"{address.BuildingNumber}, ");
+        }
+        if (address.Street is not null)
+        {
+            generetedNameSb.Append($"{address.Street}, ");
+        }
+
+        generetedNameSb.Append($"{city.Name}, ");
+        generetedNameSb.Append(city.Country.Name);
+        address.GeneratedName = generetedNameSb.ToString();
+    }
     public async Task<Address> GetAsync(long id, CancellationToken cancellationToken = default)
     {
         var entity = await repository.SelectAsync<Address>(address => address.Id == id,
@@ -56,6 +78,8 @@ public class AddressService(IRepository repository, AddressValidator validator) 
     public async Task<Address> UpdateAsync(long id, Address address, CancellationToken cancellationToken = default)
     {
         await validator.ValidateOrPanicAsync(address);
+        // generating address string
+        await GenerateAddressStringAsync(address);
         var updatedEntity = await repository.UpdateAsync(addr => addr.Id == id, address,
             shouldThrowException: true,
             cancellationToken: cancellationToken);

@@ -145,7 +145,8 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("GenreId");
 
-                    b.HasIndex("Isbn");
+                    b.HasIndex("Isbn")
+                        .IsUnique();
 
                     b.HasIndex("PublisherId");
 
@@ -261,6 +262,10 @@ namespace Librista.Data.Migrations
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasMaxLength(20)
+                        .HasColumnType("TEXT");
+
+                    b.Property<decimal>("TotalFines")
+                        .HasPrecision(18, 2)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("UpdatedDate")

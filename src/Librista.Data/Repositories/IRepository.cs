@@ -15,10 +15,17 @@ public interface IRepository
     IQueryable<T> SelectAll<T>(Expression<Func<T, bool>> expression, string[]? includes = null)
         where T : Auditable;
     
-    Task<T> UpdateAsync<T>(Expression<Func<T, bool>> expression, T entity, bool shouldThrowException = false, bool shouldSave = true, CancellationToken cancellationToken = default)
+    Task<T> UpdateAsync<T>(Expression<Func<T, bool>> expression,
+        T entity,
+        bool shouldThrowException = false,
+        bool shouldSave = true,
+        CancellationToken cancellationToken = default)
         where T : Auditable;
     
-    Task<T> DeleteAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false, bool shouldSave = true, CancellationToken cancellationToken = default)
+    Task<T> DeleteAsync<T>(Expression<Func<T, bool>> expression,
+        bool shouldThrowException = false,
+        bool shouldSave = true,
+        CancellationToken cancellationToken = default)
         where T : Auditable;
     Task DeleteManyAsync<T>(Expression<Func<T, bool>> expression, bool shouldSave = true, CancellationToken cancellationToken = default)
         where T : Auditable;
