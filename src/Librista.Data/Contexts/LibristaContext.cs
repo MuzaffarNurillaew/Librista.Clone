@@ -21,15 +21,29 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
         base.OnModelCreating(builder);
         builder.HasDefaultSchema("Librista");
 
-        builder.Entity<Address>()
-            .HasOne(address => address.City)
-            .WithMany()
-            .HasForeignKey(address => address.CityId);
+        builder.Entity<Address>(entity =>
+        {
+            entity
+                .HasOne(address => address.City)
+                .WithMany()
+                .HasForeignKey(address => address.CityId);
+        });
+            
         
         builder.Entity<Author>()
             .HasMany(author => author.Books)
             .WithMany(book => book.Authors)
-            .UsingEntity<AuthorBook>();
+            .UsingEntity<AuthorBook>(entity =>
+            {
+                entity
+                    .HasOne(ab => ab.Author)
+                    .WithMany()
+                    .HasForeignKey(ab => ab.AuthorId);
+                entity
+                    .HasOne(ab => ab.Book)
+                    .WithMany()
+                    .HasForeignKey(ab => ab.BookId);
+            });
 
         builder.Entity<Book>(entity =>
         {
@@ -42,6 +56,9 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
                 .HasOne(book => book.Publisher)
                 .WithMany(publisher => publisher.Books)
                 .HasForeignKey(book => book.PublisherId);
+
+            entity
+                .HasIndex(book => book.Isbn);
         });
         builder.Entity<BorrowingRecord>(entity =>
         {

@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Librista.Data\Librista.Data.csproj" />
+  </ItemGroup>
+
 </Project>

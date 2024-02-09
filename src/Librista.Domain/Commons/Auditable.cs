@@ -12,7 +12,7 @@ public abstract class Auditable
     /// <summary>
     /// Gets or sets the created date of the entity
     /// </summary>
-    public DateTimeOffset CreatedDate { get; set; }
+    public DateTimeOffset CreatedDate { get; set; } = DateTimeOffset.UtcNow;
     /// <summary>
     /// Gets or sets the updated date of the entity
     /// </summary>
