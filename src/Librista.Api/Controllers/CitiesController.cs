@@ -11,14 +11,27 @@ namespace Librista.Api.Controllers;
 public class CitiesController(ICityService cityService, IMapper mapper) : ControllerBase
 {
     [HttpGet("{id:long}")]
-    public async Task<ActionResult<CityResultDto>> GetById(long id, CancellationToken cancellationToken)
+    public async Task<ActionResult<CityResultDto>> GetById(long id, CancellationToken cancellationToken, bool loadRelations = false)
     {
-        throw null;
+        var city = await cityService.GetAsync(id, 
+             loadRelations: loadRelations,
+             throwException: true,
+             cancellationToken: cancellationToken);
+        
+        var mappedEntity = mapper.Map<CityResultDto>(city);
+        return Ok(mappedEntity);
     }
+
     [HttpGet]
-    public async Task<ActionResult<List<CityResultDto>>> GetAll([FromQuery] CityFilter filter, CancellationToken cancellationToken)
+    public async Task<ActionResult<List<CityResultDto>>> GetAll([FromQuery] CityFilter filter,
+        CancellationToken cancellationToken, bool loadRelations = false)
     {
-        throw null;
+        var cities = await cityService.GetAllAsync(
+            filter: filter,
+            loadRelations: loadRelations,
+            cancellationToken: cancellationToken);
+        var mappedCities = mapper.Map<IEnumerable<CityResultDto>>(cities);
+
+        return Ok(mappedCities);
     }
-    
 }

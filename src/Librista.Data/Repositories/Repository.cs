@@ -46,7 +46,7 @@ public class Repository(LibristaContext context) : IRepository
         {
             foreach (var include in includes)
             {
-                entityQuery.Include(include);
+                entityQuery = entityQuery.Include(include);
             }
         }
 
@@ -62,7 +62,7 @@ public class Repository(LibristaContext context) : IRepository
         {
             foreach (var include in includes)
             {
-                entityQuery.Include(include);
+                entityQuery = entityQuery.Include(include);
             }
         }
 

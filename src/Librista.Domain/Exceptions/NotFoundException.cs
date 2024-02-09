@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Librista.Domain.Exceptions;
 
 public class NotFoundException : Exception
 {
-    public const int Code = 404;
+    public const int Code = StatusCodes.Status404NotFound;
 
     public NotFoundException(string message)
         : base(message)

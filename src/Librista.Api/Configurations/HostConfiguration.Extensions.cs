@@ -1,4 +1,5 @@
 using System.Reflection;
+using System.Text.Json.Serialization;
 using FluentValidation;
 using Librista.Api.Middlewares;
 using Librista.Data.Repositories;
@@ -82,7 +83,16 @@ public partial class HostConfiguration
 
         return builder;
     }
-
+    private static WebApplicationBuilder AddJsonOptions(this WebApplicationBuilder builder)
+    {
+        builder.Services
+            .AddMvc()
+            .AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+            });
+        return builder;
+    }
     private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>

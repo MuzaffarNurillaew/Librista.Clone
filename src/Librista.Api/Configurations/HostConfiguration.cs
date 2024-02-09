@@ -14,6 +14,7 @@ public static partial class HostConfiguration
             .AddMappers()
             .AddValidators()
             .AddRequestContextTools() // HttpContextAccessor
+            .AddJsonOptions()
             .AddOthers(); // other utilities
         
         return builder;

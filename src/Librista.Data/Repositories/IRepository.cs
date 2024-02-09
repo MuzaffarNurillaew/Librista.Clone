@@ -10,7 +10,7 @@ public interface IRepository
     Task InsertManyAsync<T>(IEnumerable<T> entities, bool shouldSave = true, CancellationToken cancellationToken = default)
         where T : Auditable;
     
-    Task<T> SelectAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException, bool shouldTrack = true, string[]? includes = null, CancellationToken cancellationToken = default)
+    Task<T> SelectAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false, bool shouldTrack = true, string[]? includes = null, CancellationToken cancellationToken = default)
         where T : Auditable;
     IQueryable<T> SelectAll<T>(Expression<Func<T, bool>> expression, string[]? includes = null)
         where T : Auditable;

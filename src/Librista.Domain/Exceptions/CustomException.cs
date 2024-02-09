@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Http;
+
 namespace Librista.Domain.Exceptions;
 
 public class CustomException : Exception
 {
-    public int Code { get; set; } = 400;
+    public int Code { get; set; } = StatusCodes.Status400BadRequest;
 
     public CustomException(int code)
     {

@@ -53,12 +53,4 @@ public class AddressesController(IAddressService addressService, ICountryService
 
         return Ok(mapper.Map<AddressResultDto>(isDeleted));
     }
-
-    [HttpPost("countries")]
-    public async Task<IActionResult> CreateCountries(CancellationToken cancellationToken)
-    {
-        await countryService.CreateAllAsync(cancellationToken);
-        return NoContent();
-    }
-    
 }
