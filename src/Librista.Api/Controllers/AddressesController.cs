@@ -10,7 +10,7 @@ namespace Librista.Api.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-public class AddressesController(IAddressService addressService, IMapper mapper) : ControllerBase
+public class AddressesController(IAddressService addressService, ICountryService countryService, IMapper mapper) : ControllerBase
 {
     [HttpPost]
     public async Task<ActionResult<AddressResultDto>> Create(AddressCreationDto address, CancellationToken cancellationToken)
@@ -31,10 +31,34 @@ public class AddressesController(IAddressService addressService, IMapper mapper)
     }
 
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<AddressResultDto>>> GetAll(AddressFilter filter, CancellationToken cancellationToken)
+    public async Task<ActionResult<IEnumerable<AddressResultDto>>> GetAll([FromQuery] AddressFilter filter, CancellationToken cancellationToken)
     {
-        var addresses = await addressService.GetAllAsync(filter, cancellationToken);
+        var addresses = await addressService.GetAllAsync(filter, cancellationToken: cancellationToken);
 
         return Ok(mapper.Map<IEnumerable<AddressResultDto>>(addresses));
     }
+
+    [HttpPut("{id:long}")]
+    public async Task<ActionResult<AddressResultDto>> Update(long id, AddressUpdateDto address, CancellationToken cancellationToken)
+    {
+        var mappedAddress = mapper.Map<Address>(address);
+        var updatedAddress = await addressService.UpdateAsync(id, mappedAddress, cancellationToken: cancellationToken);
+
+        return Ok(mapper.Map<AddressResultDto>(updatedAddress));
+    }
+    [HttpDelete("{id:long}")]
+    public async Task<ActionResult<bool>> Delete(long id, CancellationToken cancellationToken)
+    {
+        var isDeleted = await addressService.DeleteAsync(id, cancellationToken: cancellationToken);
+
+        return Ok(mapper.Map<AddressResultDto>(isDeleted));
+    }
+
+    [HttpPost("countries")]
+    public async Task<IActionResult> CreateCountries(CancellationToken cancellationToken)
+    {
+        await countryService.CreateAllAsync(cancellationToken);
+        return NoContent();
+    }
+    
 }

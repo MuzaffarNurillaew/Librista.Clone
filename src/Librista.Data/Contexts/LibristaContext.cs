@@ -71,7 +71,8 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
                 .HasForeignKey(book => book.PublisherId);
 
             entity
-                .HasIndex(book => book.Isbn);
+                .HasIndex(book => book.Isbn)
+                .IsUnique();
         });
         builder.Entity<BorrowingRecord>(entity =>
         {
@@ -91,6 +92,10 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .WithMany(country => country.Cities)
             .HasForeignKey(city => city.CountryId);
 
+        builder.Entity<Country>()
+            .HasIndex(country => country.Name)
+            .IsUnique();
+        
         builder.Entity<Client>()
             .HasOne(client => client.Address)
             .WithMany()
