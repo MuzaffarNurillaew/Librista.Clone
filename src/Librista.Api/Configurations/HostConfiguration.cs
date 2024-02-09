@@ -11,6 +11,8 @@ public static partial class HostConfiguration
             .AddDataBaseProvider() // DbContext
             .AddStorageDependencies() // Registering repositories & data related dependencies
             .AddServiceDependencies()
+            .AddMappers()
+            .AddValidators()
             .AddRequestContextTools() // HttpContextAccessor
             .AddOthers(); // other utilities
         
@@ -23,6 +25,7 @@ public static partial class HostConfiguration
             .UseDeveloperTools() // Swagger
             .UseExposers() // controllers
             .UseCors() // CORS
+            .UseMiddlewares()
             .UseRequestContextTools() // HttpsRedirection
             .UseOthers() // other utilities
             .UseStaticFiles(); // using static files: wwwroot

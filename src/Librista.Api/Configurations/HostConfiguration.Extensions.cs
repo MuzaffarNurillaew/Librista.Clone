@@ -1,15 +1,26 @@
+using System.Reflection;
+using FluentValidation;
+using Librista.Api.Middlewares;
 using Librista.Data.Repositories;
 using Librista.Data.Contexts;
 using Librista.Service.Interfaces;
 using Librista.Service.Services;
+using Librista.Service.Validators.Utilities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Api.Configurations;
 
 public partial class HostConfiguration
 {
-    #region WebApplication extensions
+    private static readonly ICollection<Assembly> Assemblies;
 
+    static HostConfiguration()
+    {
+        Assemblies = Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select(Assembly.Load).ToList();
+        Assemblies.Add(Assembly.GetExecutingAssembly());
+    }
+    
+    #region WebApplication extensions
     private static WebApplication UseDeveloperTools(this WebApplication app)
     {
         if (app.Environment.IsDevelopment())
@@ -26,7 +37,11 @@ public partial class HostConfiguration
         app.MapControllers();
         return app;
     }
-
+    private static WebApplication UseMiddlewares(this WebApplication app)
+    {
+        app.UseMiddleware<ExceptionHandlingMiddleware>();
+        return app;
+    }
     private static WebApplication UseCors(this WebApplication app)
     {
         app.UseCors("LibristaOrigin");
@@ -118,6 +133,17 @@ public partial class HostConfiguration
         return builder;
     }
 
+    private static WebApplicationBuilder AddValidators(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddValidatorsFromAssemblies(Assemblies);
+        builder.Services.AddScoped<ValidationUtilities>();
+        return builder;
+    }
+    private static WebApplicationBuilder AddMappers(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAutoMapper(Assemblies);
+        return builder;
+    }
     private static WebApplicationBuilder AddOthers(this WebApplicationBuilder builder)
     {
         return builder;

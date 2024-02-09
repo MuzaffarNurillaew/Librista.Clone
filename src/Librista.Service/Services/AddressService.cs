@@ -4,6 +4,7 @@ using Librista.Service.Filters;
 using Librista.Service.Interfaces;
 using Librista.Service.Validators;
 using Librista.Service.Validators.Utilities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Service.Services;
 
@@ -26,16 +27,44 @@ public class AddressService(IRepository repository, AddressValidator validator) 
 
     public async Task<List<Address>> GetAllAsync(AddressFilter filter, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        var addressesQuery = repository.SelectAll<Address>(address => true,
+            includes: [$"{nameof(Address.City)}"]);
+
+        #region Filtering
+        if (filter.Search is not null)
+            addressesQuery = addressesQuery.Where(address =>
+                 (address.Street != null && address.Street.Contains(filter.Search)) ||
+                 (address.BuildingNumber != null && address.BuildingNumber.Contains(filter.Search)) ||
+                 address.City.Name.Contains(filter.Search));
+        if (filter.MaximumLatitude is not null)
+            addressesQuery = addressesQuery.Where(address =>
+                address.Latitude != null && address.Latitude <= filter.MaximumLatitude);
+        if (filter.MinimumLatitude is not null)
+            addressesQuery = addressesQuery.Where(address =>
+                address.Latitude != null && address.Latitude >= filter.MinimumLatitude);
+        if (filter.MaximumLongitude is not null)
+            addressesQuery = addressesQuery.Where(address =>
+                address.Longitude != null && address.Longitude <= filter.MaximumLongitude);
+        if (filter.MinimumLongitude is not null)
+            addressesQuery = addressesQuery.Where(address =>
+                address.Longitude != null && address.Longitude >= filter.MinimumLongitude);
+        #endregion
+
+        return await addressesQuery.ToListAsync(cancellationToken: cancellationToken);
     }
 
     public async Task<Address> UpdateAsync(long id, Address address, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await validator.ValidateOrPanicAsync(address);
+        var updatedEntity = await repository.UpdateAsync(addr => addr.Id == id, address,
+            shouldThrowException: true,
+            cancellationToken: cancellationToken);
+        return updatedEntity;
     }
 
     public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken = default)
     {
-        throw new NotImplementedException();
+        await repository.DeleteAsync<Address>(address => address.Id == id, shouldThrowException: true, cancellationToken: cancellationToken);
+        return true;
     }
 }
