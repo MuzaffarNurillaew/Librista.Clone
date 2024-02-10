@@ -1,3 +1,4 @@
+using System.Data;
 using FluentValidation;
 using Librista.Domain.Entities;
 using Librista.Service.Validators.Utilities;
@@ -15,32 +16,14 @@ public class PublisherValidator : AbstractValidator<Publisher>
     }
 }
 
-public class AuthorValidator : AbstractValidator<Author>
-{
-    public AuthorValidator()
-    {
-        RuleFor(author => author.Name)
-            .Must(name => !string.IsNullOrWhiteSpace(name) && name.Length is > 3 and < 51);
-        RuleFor(author => author.Biography)
-            .Must(biography => biography is null ||
-                               (!string.IsNullOrWhiteSpace(biography) && biography.Length is > 15 and < 301));
-    }
-}
-public class BookValidator : AbstractValidator<Author>
-{
-    public BookValidator()
-    {
-        
-    }
-}
-public class BorrowingRecordValidator : AbstractValidator<Author>
+public class BorrowingRecordValidator : AbstractValidator<BorrowingRecord>
 {
     public BorrowingRecordValidator()
     {
         
     }
 }
-public class ClientValidator : AbstractValidator<Author>
+public class ClientValidator : AbstractValidator<ClientValidator>
 {
     public ClientValidator()
     {

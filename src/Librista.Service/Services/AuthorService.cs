@@ -11,7 +11,8 @@ namespace Librista.Service.Services;
 
 public class AuthorService(IRepository repository, AuthorValidator authorValidator) : IAuthorService
 {
-    public async Task<Author> CreateAsync(Author author, CancellationToken cancellationToken = default)
+    public async Task<Author> CreateAsync(Author author,
+        CancellationToken cancellationToken = default)
     {
         await authorValidator.ValidateOrPanicAsync(author);
         var createdAuthor = await repository.InsertAsync(author,
@@ -75,7 +76,7 @@ public class AuthorService(IRepository repository, AuthorValidator authorValidat
         CancellationToken cancellationToken = default)
     {
         await authorValidator.ValidateOrPanicAsync(author);
-        var updatedGenre = await repository.UpdateAsync<Author>(pub => pub.Id == id,
+        var updatedGenre = await repository.UpdateAsync<Author>(auth => auth.Id == id,
             entity: author,
             shouldThrowException: throwException,
             shouldSave: true,

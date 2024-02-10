@@ -11,8 +11,15 @@ public class Book : Auditable
     [MaxLength(20)]
     public required string Isbn { get; set; }
     
-    [MaxLength(50)]
+    [MaxLength(80)]
     public required string Title { get; set; }
+    
+    [MaxLength(500)]
+    public string? Summary { get; set; }
+    
+    [MaxLength(500)]
+    public string? Chapters { get; set; }
+    
     public DateTimeOffset PublicationDate { get; set; }
     public int LeftCount { get; set; }
     
