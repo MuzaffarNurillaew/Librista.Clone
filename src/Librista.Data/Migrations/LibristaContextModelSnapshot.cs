@@ -89,7 +89,7 @@ namespace Librista.Data.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(30)
+                        .HasMaxLength(50)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("UpdatedDate")
@@ -105,6 +105,10 @@ namespace Librista.Data.Migrations
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<string>("Chapters")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset>("CreatedDate")
                         .HasColumnType("TEXT");
@@ -133,9 +137,13 @@ namespace Librista.Data.Migrations
                     b.Property<long>("PublisherId")
                         .HasColumnType("INTEGER");
 
+                    b.Property<string>("Summary")
+                        .HasMaxLength(500)
+                        .HasColumnType("TEXT");
+
                     b.Property<string>("Title")
                         .IsRequired()
-                        .HasMaxLength(50)
+                        .HasMaxLength(80)
                         .HasColumnType("TEXT");
 
                     b.Property<DateTimeOffset?>("UpdatedDate")

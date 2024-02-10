@@ -15,18 +15,3 @@ public class PublisherValidator : AbstractValidator<Publisher>
             .Must(name => name is null || name.Length > 0);
     }
 }
-
-public class BorrowingRecordValidator : AbstractValidator<BorrowingRecord>
-{
-    public BorrowingRecordValidator()
-    {
-        
-    }
-}
-public class ClientValidator : AbstractValidator<ClientValidator>
-{
-    public ClientValidator()
-    {
-        
-    }
-}

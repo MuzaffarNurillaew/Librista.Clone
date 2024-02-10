@@ -11,5 +11,6 @@ public class AuthorsProfile : Profile
         CreateMap<AuthorCreationDto, Author>();
         CreateMap<Author, AuthorResultDto>();
         CreateMap<AuthorUpdateDto, Author>();
+        CreateMap<AuthorCreationDtoForBook, Author>();
     }
 }

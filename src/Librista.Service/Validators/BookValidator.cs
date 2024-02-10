@@ -1,3 +1,4 @@
+using System.Data;
 using FluentValidation;
 using Librista.Domain.Entities;
 using Librista.Service.Validators.Utilities;
@@ -10,8 +11,10 @@ public class BookValidator : AbstractValidator<Book>
     {
         RuleFor(book => book.GenreId)
             .MustAsync(async (genreId, _) => await utilities.ExistsAsync<Genre>(genreId, shouldThrowException: true));
+        
         RuleFor(book => book.PublisherId)
             .MustAsync(async (publisherId, _) => await utilities.ExistsAsync<Publisher>(publisherId, shouldThrowException: true));
+        
         RuleFor(book => book.Isbn)
             .Must(isbn =>
             {
@@ -34,6 +37,18 @@ public class BookValidator : AbstractValidator<Book>
         RuleFor(book => book.Chapters)
             .Must(chapter =>
                 chapter is null || (!string.IsNullOrWhiteSpace(chapter) && chapter.Length is > 15 and < 501));
+        
+        RuleFor(book => book.LeftCount)
+            .Must(count => count >= 0);
+        
+        // ReSharper disable once ConditionIsAlwaysTrueOrFalseAccordingToNullableAPIContract
+        When(book => book.Authors is not null && book.Authors.Count != 0,
+            () =>
+            {
+                RuleForEach(book => book.Authors)
+                    .MustAsync(async (author, _)
+                        => await utilities.ExistsAsync<Author>(author.Id));
+            });
     }
     
     // Taken from: https://www.geeksforgeeks.org/program-check-isbn/

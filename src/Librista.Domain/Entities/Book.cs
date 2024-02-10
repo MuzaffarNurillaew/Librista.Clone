@@ -26,7 +26,6 @@ public class Book : Auditable
     public long GenreId { get; set; }
     public Genre Genre { get; set; } = null!;
     
-    
     public long PublisherId { get; set; }
     public Publisher Publisher { get; set; } = null!;
     
