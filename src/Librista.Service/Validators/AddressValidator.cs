@@ -22,15 +22,3 @@ public class AddressValidator : AbstractValidator<Address>
             .Must(lon => lon is null or > -181 and < 180);
     }
 }
-
-public class PublisherValidator : AbstractValidator<Publisher>
-{
-    public PublisherValidator(ValidationUtilities utilities)
-    {
-        RuleFor(publisher => publisher.AddressId)
-            .MustAsync(async (addressId, _) => await utilities.ExistsAsync<Address>(addressId, shouldThrowException: true));
-        RuleFor(publisher => publisher.Name)
-            .Must(name => name is null || name.Length > 0);
-            
-    }
-}

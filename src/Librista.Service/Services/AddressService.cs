@@ -54,10 +54,14 @@ public class AddressService(IRepository repository, AddressValidator validator) 
 
         #region Filtering
         if (filter.Search is not null)
+        {
+            filter.Search = filter.Search.ToLower();
             addressesQuery = addressesQuery.Where(address =>
-                 (address.Street != null && address.Street.Contains(filter.Search)) ||
-                 (address.BuildingNumber != null && address.BuildingNumber.Contains(filter.Search)) ||
+                 (address.Street != null && address.Street.ToLower().Contains(filter.Search)) ||
+                 (address.BuildingNumber != null && address.BuildingNumber.ToLower().Contains(filter.Search)) ||
                  address.City.Name.Contains(filter.Search));
+            
+        }
         if (filter.MaximumLatitude is not null)
             addressesQuery = addressesQuery.Where(address =>
                 address.Latitude != null && address.Latitude <= filter.MaximumLatitude);
@@ -88,7 +92,9 @@ public class AddressService(IRepository repository, AddressValidator validator) 
 
     public async Task<bool> DeleteAsync(long id, CancellationToken cancellationToken = default)
     {
-        await repository.DeleteAsync<Address>(address => address.Id == id, shouldThrowException: true, cancellationToken: cancellationToken);
+        await repository.DeleteAsync<Address>(address => address.Id == id,
+            shouldThrowException: true,
+            cancellationToken: cancellationToken);
         return true;
     }
 }

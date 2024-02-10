@@ -80,7 +80,9 @@ public class PublisherService(IRepository repository, PublisherValidator publish
         return updatedGenre;
     }
 
-    public async Task<bool> DeleteAsync(long id, bool throwException = true, CancellationToken cancellationToken = default)
+    public async Task<bool> DeleteAsync(long id,
+        bool throwException = true,
+        CancellationToken cancellationToken = default)
     {
         var deletedEntity = await repository.DeleteAsync<Publisher>(publisher => publisher.Id == id,
             shouldThrowException: throwException,
