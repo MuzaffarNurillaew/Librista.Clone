@@ -21,7 +21,6 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-        builder.HasDefaultSchema("Librista");
 
         #region Global query filters 
         builder.Entity<Address>().HasQueryFilter(address => !address.IsDeleted);
@@ -99,6 +98,9 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
 
         builder.Entity<Genre>()
             .HasKey(genre => genre.Id);
+
+        builder.Entity<AuthorBook>()
+            .HasKey(ab => ab.Id);
 
         #endregion
     }

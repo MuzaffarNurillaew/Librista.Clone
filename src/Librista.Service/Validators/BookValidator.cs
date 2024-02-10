@@ -49,6 +49,7 @@ public class BookValidator : AbstractValidator<Book>
                     .MustAsync(async (author, _)
                         => await utilities.ExistsAsync<Author>(author.Id));
             });
+        
     }
     
     // Taken from: https://www.geeksforgeeks.org/program-check-isbn/

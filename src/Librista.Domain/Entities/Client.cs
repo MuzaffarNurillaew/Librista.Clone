@@ -14,6 +14,7 @@ public class Client : Auditable
     public required string LastName { get; set; }
     
     [MaxLength(30)]
+    [EmailAddress]
     public required string Email { get; set; }
     
     [Precision(18, 2)]

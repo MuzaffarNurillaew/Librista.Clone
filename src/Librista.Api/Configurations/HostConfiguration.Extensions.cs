@@ -5,6 +5,7 @@ using FluentValidation;
 using Librista.Api.Middlewares;
 using Librista.Data.Repositories;
 using Librista.Data.Contexts;
+using Librista.Data.Repositories.JoiningEntities;
 using Librista.Service.Interfaces;
 using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
@@ -125,6 +126,7 @@ public partial class HostConfiguration
     private static WebApplicationBuilder AddStorageDependencies(this WebApplicationBuilder builder)
     {
         builder.Services.AddScoped<IRepository, Repository>();
+        builder.Services.AddScoped<IJoiningEntityRepository, JoiningEntityRepository>();
         return builder;
     }
 

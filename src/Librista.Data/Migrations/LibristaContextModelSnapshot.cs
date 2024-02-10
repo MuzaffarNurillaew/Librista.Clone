@@ -15,9 +15,7 @@ namespace Librista.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder
-                .HasDefaultSchema("Librista")
-                .HasAnnotation("ProductVersion", "8.0.1");
+            modelBuilder.HasAnnotation("ProductVersion", "8.0.1");
 
             modelBuilder.Entity("Librista.Domain.Entities.Address", b =>
                 {
@@ -65,7 +63,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Addresses", "Librista");
+                    b.ToTable("Addresses");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Author", b =>
@@ -97,7 +95,7 @@ namespace Librista.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors", "Librista");
+                    b.ToTable("Authors");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Book", b =>
@@ -158,7 +156,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("PublisherId");
 
-                    b.ToTable("Books", "Librista");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.BorrowingRecord", b =>
@@ -203,7 +201,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("ClientId");
 
-                    b.ToTable("BorrowingRecords", "Librista");
+                    b.ToTable("BorrowingRecords");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.City", b =>
@@ -236,7 +234,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("CountryId");
 
-                    b.ToTable("Cities", "Librista");
+                    b.ToTable("Cities");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Client", b =>
@@ -283,7 +281,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Clients", "Librista");
+                    b.ToTable("Clients");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Country", b =>
@@ -311,7 +309,7 @@ namespace Librista.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Countries", "Librista");
+                    b.ToTable("Countries");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Genre", b =>
@@ -339,27 +337,45 @@ namespace Librista.Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Genres", "Librista");
+                    b.ToTable("Genres");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Joinings.AuthorBook", b =>
                 {
+                    b.Property<long>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<long>("AuthorId")
+                        .HasColumnType("INTEGER");
+
                     b.Property<long>("AuthorsId")
                         .HasColumnType("INTEGER");
 
                     b.Property<long>("BookId")
                         .HasColumnType("INTEGER");
 
-                    b.Property<long>("AuthorId")
+                    b.Property<DateTimeOffset>("CreatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<DateTimeOffset?>("DeletedDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<bool>("IsDeleted")
                         .HasColumnType("INTEGER");
 
-                    b.HasKey("AuthorsId", "BookId");
+                    b.Property<DateTimeOffset?>("UpdatedDate")
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("AuthorId");
 
+                    b.HasIndex("AuthorsId");
+
                     b.HasIndex("BookId");
 
-                    b.ToTable("AuthorBook", "Librista");
+                    b.ToTable("AuthorBook");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Publisher", b =>
@@ -392,7 +408,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("AddressId");
 
-                    b.ToTable("Publishers", "Librista");
+                    b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Address", b =>

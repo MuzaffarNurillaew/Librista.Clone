@@ -1,5 +1,7 @@
 using Librista.Data.Repositories;
+using Librista.Data.Repositories.JoiningEntities;
 using Librista.Domain.Entities;
+using Librista.Domain.Entities.Joinings;
 using Librista.Service.Filters;
 using Librista.Service.Filters.Extensions;
 using Librista.Service.Interfaces;
@@ -9,14 +11,26 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Service.Services;
 
-public class BookService(IRepository repository, BookValidator bookValidator) : IBookService
+public class BookService(IRepository repository, IJoiningEntityRepository joiningEntityRepository, BookValidator bookValidator) : IBookService
 {
     public async Task<Book> CreateAsync(Book book,
         CancellationToken cancellationToken = default)
     {
         await bookValidator.ValidateOrPanicAsync(book);
+        var authorIds = book.Authors.Select(author => author.Id);
+        book.Authors = [];
         var createdBook = await repository.InsertAsync(book,
             cancellationToken: cancellationToken);
+
+        var relationalEntities = authorIds.Select(authorId =>
+            new AuthorBook
+            {
+                AuthorId = authorId,
+                BookId = createdBook.Id
+            });
+        await joiningEntityRepository.InsertManyAsync(relationalEntities,
+            cancellationToken: cancellationToken);
+        
 
         return createdBook;
     }
