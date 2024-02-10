@@ -31,8 +31,8 @@ public class CityService(IRepository repository) : ICityService
         if (filter.Search is not null)
         {
             citiesQuery = citiesQuery.Where(city =>
-                city.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase) ||
-                city.Country.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+                city.Name.ToLower().Contains(filter.Search.ToLower()) ||
+                city.Country.Name.ToLower().Contains(filter.Search.ToLower()));
         }
 
         citiesQuery.FilterPagable(filter).FilterAuditable(filter);

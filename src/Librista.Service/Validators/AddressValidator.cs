@@ -28,7 +28,7 @@ public class PublisherValidator : AbstractValidator<Publisher>
     public PublisherValidator(ValidationUtilities utilities)
     {
         RuleFor(publisher => publisher.AddressId)
-            .MustAsync(async (publisherId, _) => await utilities.ExistsAsync<Publisher>(publisherId, shouldThrowException: true));
+            .MustAsync(async (addressId, _) => await utilities.ExistsAsync<Address>(addressId, shouldThrowException: true));
         RuleFor(publisher => publisher.Name)
             .Must(name => name is null || name.Length > 0);
             

@@ -50,7 +50,8 @@ public class PublisherService(IRepository repository, PublisherValidator publish
         if (filter.Search is not null)
         {
             publishersQuery = publishersQuery.Where(publisher =>
-                publisher.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+                publisher.Name.ToLower()
+                    .Contains(filter.Search.ToLower()));
         }
         publishersQuery
             .FilterAuditable(filter)

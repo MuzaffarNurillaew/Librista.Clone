@@ -53,7 +53,9 @@ public class GenresController(IGenreService genreService, IMapper mapper) : Cont
     }
 
     [HttpPut("{id:long}")]
-    public async Task<ActionResult<GenreResultDto>> Update(long id, GenreUpdateDto genre, CancellationToken cancellationToken)
+    public async Task<ActionResult<GenreResultDto>> Update(long id,
+        GenreUpdateDto genre,
+        CancellationToken cancellationToken)
     {
         var mappedGenre = mapper.Map<Genre>(genre);
         var updatedGenre = await genreService.UpdateAsync(id,

@@ -51,7 +51,7 @@ public class GenreService(IRepository repository, GenreValidator genreValidator)
         if (filter.Search is not null)
         {
             genresQuery = genresQuery.Where(genre =>
-                genre.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+                genre.Name.ToLower().Contains(filter.Search.ToLower()));
         }
 
         genresQuery
