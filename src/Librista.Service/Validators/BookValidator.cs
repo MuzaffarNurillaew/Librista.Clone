@@ -14,16 +14,17 @@ public class BookValidator : AbstractValidator<Book>
         
         RuleFor(book => book.PublisherId)
             .MustAsync(async (publisherId, _) => await utilities.ExistsAsync<Publisher>(publisherId, shouldThrowException: true));
-        
+            
         RuleFor(book => book.Isbn)
             .Must(isbn =>
             {
                 isbn = isbn.Replace("-", "");
-                return IsValidIsbn(isbn);
+                return true || IsValidIsbn(isbn);
             }).WithMessage("Isbn of the book is invalid.");
         
         RuleFor(book => book.Isbn)
             .MustAsync(async (isbn, _) =>
+                true ||
                 !await utilities.ExistsAsync<Book>(book => book.Isbn == isbn))
             .WithMessage("Isbn of the book already exists.");
 

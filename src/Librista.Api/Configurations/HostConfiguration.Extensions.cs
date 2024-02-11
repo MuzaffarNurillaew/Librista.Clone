@@ -6,6 +6,7 @@ using Librista.Api.Middlewares;
 using Librista.Data.Repositories;
 using Librista.Data.Contexts;
 using Librista.Data.Repositories.JoiningEntities;
+using Librista.Domain.Entities;
 using Librista.Service.Interfaces;
 using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
@@ -140,6 +141,7 @@ public partial class HostConfiguration
         builder.Services.AddScoped<ICountryService, CountryService>();
         builder.Services.AddScoped<IGenreService, GenreService>();
         builder.Services.AddScoped<IPublisherService, PublisherService>();
+        builder.Services.AddScoped<IClientService, ClientService>();
 
         return builder;
     }

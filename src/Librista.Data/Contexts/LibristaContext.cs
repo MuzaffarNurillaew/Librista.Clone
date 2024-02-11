@@ -45,18 +45,20 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
         builder.Entity<Author>()
             .HasMany(author => author.Books)
             .WithMany(book => book.Authors)
-            .UsingEntity<AuthorBook>(entity =>
-            {
-                entity
-                    .HasOne(ab => ab.Author)
-                    .WithMany()
-                    .HasForeignKey(ab => ab.AuthorId);
-                entity
-                    .HasOne(ab => ab.Book)
-                    .WithMany()
-                    .HasForeignKey(ab => ab.BookId);
-            });
+            .UsingEntity<AuthorBook>();
 
+        builder.Entity<AuthorBook>(entity =>
+        {
+            entity
+                .HasOne(ab => ab.Book)
+                .WithMany()
+                .HasForeignKey(ab => ab.BookId);
+            entity
+                .HasOne(ab => ab.Author)
+                .WithMany()
+                .HasForeignKey(ab => ab.AuthorId);
+            entity.ToTable("AuthorBooks");
+        });
         builder.Entity<Book>(entity =>
         {
             entity
@@ -95,13 +97,6 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .HasOne(client => client.Address)
             .WithMany()
             .HasForeignKey(client => client.AddressId);
-
-        builder.Entity<Genre>()
-            .HasKey(genre => genre.Id);
-
-        builder.Entity<AuthorBook>()
-            .HasKey(ab => ab.Id);
-
         #endregion
     }
 }

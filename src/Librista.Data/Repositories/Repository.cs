@@ -83,7 +83,6 @@ public class Repository(LibristaContext context) : IRepository
         {
             await context.SaveChangesAsync(cancellationToken);
         }
-
         return entityToUpdate;
     }
 

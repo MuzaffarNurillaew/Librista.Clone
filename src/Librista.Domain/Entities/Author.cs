@@ -11,5 +11,5 @@ public class Author : Auditable
     [MaxLength(500)]
     public string? Biography { get; set; }
 
-    public List<Book>? Books { get; set; }
+    public List<Book> Books { get; set; }
 }

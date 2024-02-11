@@ -52,7 +52,7 @@ public class CountryService(IRepository repository, IMapper mapper) : ICountrySe
         {
             countriesQuery = countriesQuery
                 .Where(country =>
-                    country.Name.Contains(filter.Search, StringComparison.OrdinalIgnoreCase));
+                    country.Name.ToLower().Contains(filter.Search.ToLower()));
         }
 
         countriesQuery = countriesQuery.FilterAuditable(filter);

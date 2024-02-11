@@ -375,7 +375,7 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("BookId");
 
-                    b.ToTable("AuthorBook");
+                    b.ToTable("AuthorBooks", (string)null);
                 });
 
             modelBuilder.Entity("Librista.Domain.Entities.Publisher", b =>
