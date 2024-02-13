@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # drops existing database
-dotnet ef database drop --startup-project Librista.Api/ --project Librista.Data/
+yes | dotnet ef database drop --startup-project Librista.Api/ --project Librista.Data/
 
 # removes existing migration
 dotnet ef migrations remove --startup-project Librista.Api/ --project Librista.Data/

@@ -16,6 +16,7 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
     public DbSet<Country> Countries => Set<Country>();
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
+    public DbSet<AuthorBook> AuthorBooks => Set<AuthorBook>();
     #endregion
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -33,6 +34,16 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
         builder.Entity<Publisher>().HasQueryFilter(address => !address.IsDeleted);
         #endregion
 
+        builder.ApplyConfigurationsFromAssembly(typeof(LibristaContext).Assembly);
+        builder.Entity<Author>()
+            .HasMany(author => author.Books)
+            .WithMany(book => book.Authors)
+            .UsingEntity<AuthorBook>();
+        builder.Entity<AuthorBook>()
+            .HasKey(ab => new { ab.AuthorId, ab.BookId });
+        builder.Entity<AuthorBook>()
+            .ToTable("AuthorBooks");
+        /*
         #region Fluent API
         builder.Entity<Address>(entity =>
         {
@@ -41,7 +52,7 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
                 .WithMany()
                 .HasForeignKey(address => address.CityId);
         });
-        
+
         builder.Entity<Author>()
             .HasMany(author => author.Books)
             .WithMany(book => book.Authors)
@@ -92,11 +103,12 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .HasOne(city => city.Country)
             .WithMany(country => country.Cities)
             .HasForeignKey(city => city.CountryId);
-        
+
         builder.Entity<Client>()
             .HasOne(client => client.Address)
             .WithMany()
             .HasForeignKey(client => client.AddressId);
         #endregion
+        */
     }
 }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Librista.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class ghj : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -206,11 +206,9 @@ namespace Librista.Data.Migrations
                 name: "AuthorBooks",
                 columns: table => new
                 {
-                    Id = table.Column<long>(type: "INTEGER", nullable: false)
-                        .Annotation("Sqlite:Autoincrement", true),
                     AuthorId = table.Column<long>(type: "INTEGER", nullable: false),
                     BookId = table.Column<long>(type: "INTEGER", nullable: false),
-                    AuthorsId = table.Column<long>(type: "INTEGER", nullable: false),
+                    Id = table.Column<long>(type: "INTEGER", nullable: false),
                     CreatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
                     UpdatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
                     DeletedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
@@ -218,16 +216,10 @@ namespace Librista.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_AuthorBooks", x => x.Id);
+                    table.PrimaryKey("PK_AuthorBooks", x => new { x.AuthorId, x.BookId });
                     table.ForeignKey(
                         name: "FK_AuthorBooks_Authors_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_AuthorBooks_Authors_AuthorsId",
-                        column: x => x.AuthorsId,
                         principalTable: "Authors",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -279,16 +271,6 @@ namespace Librista.Data.Migrations
                 column: "CityId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_AuthorBooks_AuthorId",
-                table: "AuthorBooks",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_AuthorBooks_AuthorsId",
-                table: "AuthorBooks",
-                column: "AuthorsId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_AuthorBooks_BookId",
                 table: "AuthorBooks",
                 column: "BookId");
@@ -297,12 +279,6 @@ namespace Librista.Data.Migrations
                 name: "IX_Books_GenreId",
                 table: "Books",
                 column: "GenreId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_Isbn",
-                table: "Books",
-                column: "Isbn",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_PublisherId",
