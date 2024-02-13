@@ -34,6 +34,7 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
         builder.Entity<Publisher>().HasQueryFilter(address => !address.IsDeleted);
         #endregion
 
+        #region Fluent API
         builder.ApplyConfigurationsFromAssembly(typeof(LibristaContext).Assembly);
         builder.Entity<Author>()
             .HasMany(author => author.Books)
@@ -43,8 +44,7 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .HasKey(ab => new { ab.AuthorId, ab.BookId });
         builder.Entity<AuthorBook>()
             .ToTable("AuthorBooks");
-        /*
-        #region Fluent API
+        
         builder.Entity<Address>(entity =>
         {
             entity
@@ -109,6 +109,5 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
             .WithMany()
             .HasForeignKey(client => client.AddressId);
         #endregion
-        */
     }
 }

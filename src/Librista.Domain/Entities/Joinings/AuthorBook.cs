@@ -2,7 +2,7 @@ using Librista.Domain.Commons;
 
 namespace Librista.Domain.Entities.Joinings;
 
-public class AuthorBook : Auditable
+public class AuthorBook
 {
     public long AuthorId { get; set; }
     public Author Author { get; set; } = null!;

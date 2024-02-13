@@ -151,6 +151,9 @@ namespace Librista.Data.Migrations
 
                     b.HasIndex("GenreId");
 
+                    b.HasIndex("Isbn")
+                        .IsUnique();
+
                     b.HasIndex("PublisherId");
 
                     b.ToTable("Books");
@@ -344,21 +347,6 @@ namespace Librista.Data.Migrations
 
                     b.Property<long>("BookId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset?>("DeletedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("UpdatedDate")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("AuthorId", "BookId");
 

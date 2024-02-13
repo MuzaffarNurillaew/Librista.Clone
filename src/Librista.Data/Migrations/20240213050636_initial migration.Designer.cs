@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Librista.Data.Migrations
 {
     [DbContext(typeof(LibristaContext))]
-    [Migration("20240212091055_init")]
-    partial class init
+    [Migration("20240213050636_initial migration")]
+    partial class initialmigration
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -153,6 +153,9 @@ namespace Librista.Data.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("GenreId");
+
+                    b.HasIndex("Isbn")
+                        .IsUnique();
 
                     b.HasIndex("PublisherId");
 
@@ -347,21 +350,6 @@ namespace Librista.Data.Migrations
 
                     b.Property<long>("BookId")
                         .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset>("CreatedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<DateTimeOffset?>("DeletedDate")
-                        .HasColumnType("TEXT");
-
-                    b.Property<long>("Id")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<bool>("IsDeleted")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<DateTimeOffset?>("UpdatedDate")
-                        .HasColumnType("TEXT");
 
                     b.HasKey("AuthorId", "BookId");
 

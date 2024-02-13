@@ -7,6 +7,7 @@ namespace Librista.Api.Models.DTOs.Books;
 
 public class BookResultDto
 {
+    public long Id { get; set; }
     public required string Isbn { get; set; }
     public required string Title { get; set; }
     public string? Summary { get; set; }

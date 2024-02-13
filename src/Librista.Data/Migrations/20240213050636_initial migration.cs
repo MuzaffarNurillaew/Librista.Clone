@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Librista.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class init : Migration
+    public partial class initialmigration : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -207,12 +207,7 @@ namespace Librista.Data.Migrations
                 columns: table => new
                 {
                     AuthorId = table.Column<long>(type: "INTEGER", nullable: false),
-                    BookId = table.Column<long>(type: "INTEGER", nullable: false),
-                    Id = table.Column<long>(type: "INTEGER", nullable: false),
-                    CreatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: false),
-                    UpdatedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    DeletedDate = table.Column<DateTimeOffset>(type: "TEXT", nullable: true),
-                    IsDeleted = table.Column<bool>(type: "INTEGER", nullable: false)
+                    BookId = table.Column<long>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -279,6 +274,12 @@ namespace Librista.Data.Migrations
                 name: "IX_Books_GenreId",
                 table: "Books",
                 column: "GenreId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Books_Isbn",
+                table: "Books",
+                column: "Isbn",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_PublisherId",
