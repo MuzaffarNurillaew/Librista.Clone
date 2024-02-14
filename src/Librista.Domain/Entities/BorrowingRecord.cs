@@ -1,4 +1,5 @@
 using Librista.Domain.Commons;
+using Microsoft.AspNetCore.Identity;
 
 namespace Librista.Domain.Entities;
 
@@ -18,4 +19,9 @@ public class BorrowingRecord : Auditable
     public decimal? TotalFines { get; set; }
     public bool? IsPaid { get; set; }
     public bool IsReturned { get; set; }
+}
+
+public class User : IdentityUser<long>
+{
+    
 }
