@@ -16,4 +16,6 @@ public class BorrowingRecord : Auditable
     public DateTimeOffset ReturningDate { get; set; }
     
     public decimal? TotalFines { get; set; }
+    public bool? IsPaid { get; set; }
+    public bool IsReturned { get; set; }
 }

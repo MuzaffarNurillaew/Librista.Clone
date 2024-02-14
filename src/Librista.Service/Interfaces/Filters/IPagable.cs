@@ -4,5 +4,5 @@ namespace Librista.Service.Interfaces.Filters;
 
 public interface IPagable
 {
-    PaginationParameters? PaginationParameters { get; set; }
+    PaginationParameters PaginationParameters { get; set; }
 }

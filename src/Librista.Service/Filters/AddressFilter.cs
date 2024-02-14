@@ -9,5 +9,5 @@ public class AddressFilter : ISearchable, IPagable
     public decimal? MaximumLongitude { get; set; }
     public decimal? MinimumLatitude { get; set; }
     public decimal? MaximumLatitude { get; set; }
-    public PaginationParameters? PaginationParameters { get; set; } = new();
+    public PaginationParameters PaginationParameters { get; set; } = new();
 }

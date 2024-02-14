@@ -35,7 +35,7 @@ public class CityService(IRepository repository) : ICityService
                 city.Country.Name.ToLower().Contains(filter.Search.ToLower()));
         }
 
-        citiesQuery.FilterPagable(filter).FilterAuditable(filter);
+        citiesQuery = citiesQuery.FilterAuditable(filter).FilterPagable(filter);
         #endregion
 
         return await citiesQuery.ToListAsync(cancellationToken: cancellationToken);
