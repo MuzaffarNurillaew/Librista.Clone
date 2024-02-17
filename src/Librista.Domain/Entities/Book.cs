@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Domain.Entities;
 
-/// <inheritdoc cref="Auditable"/>
-public class Book : Auditable
+/// <inheritdoc cref="IAuditable"/>
+public class Book : IAuditable
 {
     [Unicode(false)]
     [MaxLength(20)]
@@ -31,4 +31,11 @@ public class Book : Auditable
     
     public List<Author> Authors { get; set; } = [];
     public List<BorrowingRecord> BorrowingRecords { get; set; } = [];
+    [Key]
+    public long Id { get; set; }
+
+    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
+    public DateTimeOffset? UpdatedDate { get; set; }
+    public DateTimeOffset? DeletedDate { get; set; }
+    public bool IsDeleted { get; set; }
 }

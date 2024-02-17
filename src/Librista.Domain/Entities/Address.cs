@@ -4,8 +4,8 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Domain.Entities;
 
-/// <inheritdoc cref="Auditable"/>
-public class Address : Auditable
+/// <inheritdoc cref="IAuditable"/>
+public class Address : IAuditable
 {
     [MaxLength(100)]
     public string GeneratedName { get; set; } = string.Empty;
@@ -24,4 +24,11 @@ public class Address : Auditable
     
     [Precision(18, 2)]
     public decimal? Latitude { get; set; }
+    [Key]
+    public long Id { get; set; }
+
+    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
+    public DateTimeOffset? UpdatedDate { get; set; }
+    public DateTimeOffset? DeletedDate { get; set; }
+    public bool IsDeleted { get; set; }
 }

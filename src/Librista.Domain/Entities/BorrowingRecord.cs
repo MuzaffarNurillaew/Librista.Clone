@@ -1,10 +1,11 @@
+using System.ComponentModel.DataAnnotations;
 using Librista.Domain.Commons;
 using Microsoft.AspNetCore.Identity;
 
 namespace Librista.Domain.Entities;
 
-/// <inheritdoc cref="Auditable"/>
-public class BorrowingRecord : Auditable
+/// <inheritdoc cref="IAuditable"/>
+public class BorrowingRecord : IAuditable
 {
     public long BookId { get; set; }
     public Book Book { get; set; } = null!;
@@ -19,6 +20,13 @@ public class BorrowingRecord : Auditable
     public decimal? TotalFines { get; set; }
     public bool? IsPaid { get; set; }
     public bool IsReturned { get; set; }
+    [Key]
+    public long Id { get; set; }
+
+    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
+    public DateTimeOffset? UpdatedDate { get; set; }
+    public DateTimeOffset? DeletedDate { get; set; }
+    public bool IsDeleted { get; set; }
 }
 
 public class User : IdentityUser<long>

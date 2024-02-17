@@ -9,7 +9,7 @@ namespace Librista.Service.Validators.Utilities;
 public class ValidationUtilities(LibristaContext context)
 {
     public async Task<bool> ExistsAsync<T>(long id, bool shouldThrowException = false)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var exists = await context.Set<T>().Where(entity => entity.Id == id).AnyAsync();
         return exists switch
@@ -20,7 +20,7 @@ public class ValidationUtilities(LibristaContext context)
         };
     }
     public async Task<bool> ExistsAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var exists = await context.Set<T>().Where(expression).AnyAsync();
         return exists switch

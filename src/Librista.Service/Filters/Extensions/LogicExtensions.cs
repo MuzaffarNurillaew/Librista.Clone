@@ -7,7 +7,7 @@ namespace Librista.Service.Filters.Extensions;
 public static class LogicExtensions
 {
     public static IQueryable<TEntity> FilterAuditable<TEntity, TFilter>(this IQueryable<TEntity> query, TFilter filter)
-        where TEntity : Auditable
+        where TEntity : IAuditable
         where TFilter : IAuditableFilter
     {
         if (filter.MinimumCreationDate is not null)
@@ -24,7 +24,7 @@ public static class LogicExtensions
     }
 
     public static IQueryable<TEntity> FilterPagable<TEntity, TFilter>(this IQueryable<TEntity> query, TFilter filter)
-        where TEntity : Auditable
+        where TEntity : IAuditable
         where TFilter : IPagable 
     {
         if (filter.PaginationParameters is not null)

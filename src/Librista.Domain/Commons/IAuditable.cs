@@ -2,18 +2,18 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Librista.Domain.Commons;
 
-public abstract class Auditable
+public interface IAuditable
 {
     /// <summary>
     /// Gets or sets the id of the entity
     /// </summary>
     [Key]
-    public long Id { get; set; } = default;
+    public long Id { get; set; }
 
     /// <summary>
     /// Gets or sets the created date of the entity
     /// </summary>
-    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
+    public DateTimeOffset CreatedDate { get; set; }
     /// <summary>
     /// Gets or sets the updated date of the entity
     /// </summary>

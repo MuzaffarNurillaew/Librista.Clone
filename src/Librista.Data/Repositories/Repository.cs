@@ -10,7 +10,7 @@ namespace Librista.Data.Repositories;
 public class Repository(LibristaContext context) : IRepository
 {
     public async Task<T> InsertAsync<T>(T entity, bool shouldSave = true, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var insertedEntity = await set.AddAsync(entity, cancellationToken);
@@ -23,7 +23,7 @@ public class Repository(LibristaContext context) : IRepository
     }
 
     public async Task InsertManyAsync<T>(IEnumerable<T> entities, bool shouldSave = true, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         await set.AddRangeAsync(entities, cancellationToken);
@@ -34,7 +34,7 @@ public class Repository(LibristaContext context) : IRepository
     }
 
     public async Task<T> SelectAsync<T>(Expression<Func<T, bool>> expression, bool shouldThrowException = false, bool shouldTrack = true, string[]? includes = null, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entityQuery = set.Where(expression);
@@ -54,7 +54,7 @@ public class Repository(LibristaContext context) : IRepository
     }
 
     public IQueryable<T> SelectAll<T>(Expression<Func<T, bool>> expression, string[]? includes = null)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entityQuery = set.Where(expression);
@@ -70,7 +70,7 @@ public class Repository(LibristaContext context) : IRepository
     }
 
     public async Task<T> UpdateAsync<T>(Expression<Func<T, bool>> expression, T entity, bool shouldThrowException = false, bool shouldSave = true, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entityToUpdate = await SelectAsync(expression,
@@ -90,7 +90,7 @@ public class Repository(LibristaContext context) : IRepository
         bool shouldThrowException = false,
         bool shouldSave = true,
         CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entityToDelete = await set.FirstOrDefaultAsync(expression, cancellationToken);
@@ -113,7 +113,7 @@ public class Repository(LibristaContext context) : IRepository
     }
     
     public async Task DeleteManyAsync<T>(Expression<Func<T, bool>> expression, bool shouldSave = true, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entitiesToDelete = await set.Where(expression).ToListAsync(cancellationToken);
@@ -128,7 +128,7 @@ public class Repository(LibristaContext context) : IRepository
         }
     }
     public async Task<bool> DestroyAsync<T>(Expression<Func<T, bool>> expression, bool shouldSave = true, CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entityToDestroy = await set.FirstOrDefaultAsync(expression, cancellationToken);
@@ -152,7 +152,7 @@ public class Repository(LibristaContext context) : IRepository
 
     public async Task DestroyManyAsync<T>(Expression<Func<T, bool>> expression, bool shouldSave = true,
         CancellationToken cancellationToken = default)
-        where T : Auditable
+        where T : class, IAuditable
     {
         var set = context.Set<T>();
         var entitiesToDestroy = await set.Where(expression).ToListAsync(cancellationToken);

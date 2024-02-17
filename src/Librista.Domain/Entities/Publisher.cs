@@ -4,8 +4,8 @@ using Librista.Domain.Commons;
 
 namespace Librista.Domain.Entities;
 
-/// <inheritdoc cref="Auditable"/>
-public class Publisher : Auditable
+/// <inheritdoc cref="IAuditable"/>
+public class Publisher : IAuditable
 {
     [MaxLength(25)]
     public required string Name { get; set; }
@@ -14,4 +14,11 @@ public class Publisher : Auditable
     public Address Address { get; set; } = null!;
     
     public List<Book> Books { get; set; } = [];
+    [Key]
+    public long Id { get; set; }
+
+    public DateTimeOffset CreatedDate { get; set; } = DateService.Now();
+    public DateTimeOffset? UpdatedDate { get; set; }
+    public DateTimeOffset? DeletedDate { get; set; }
+    public bool IsDeleted { get; set; }
 }
