@@ -8,6 +8,7 @@ using Librista.Data.Contexts;
 using Librista.Data.Repositories.JoiningEntities;
 using Librista.Domain.Entities;
 using Librista.Service.Interfaces;
+using Librista.Service.Models.Mails;
 using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -190,6 +191,10 @@ public partial class HostConfiguration
         builder.Services.AddScoped<IPublisherService, PublisherService>();
         builder.Services.AddScoped<IClientService, ClientService>();
 
+        // mail service
+        builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
+        builder.Services.AddScoped<IEmailService, EmailService>();
+        
         return builder;
     }
 
