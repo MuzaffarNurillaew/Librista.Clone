@@ -17,6 +17,9 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
     public DbSet<AuthorBook> AuthorBooks => Set<AuthorBook>();
+    public DbSet<User> Users => Set<User>();
+    public DbSet<UserRole> UserRoles => Set<UserRole>();
+    public DbSet<Role> Roles => Set<Role>();
     #endregion
 
     protected override void OnModelCreating(ModelBuilder builder)
@@ -36,14 +39,25 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
 
         #region Fluent API
         builder.ApplyConfigurationsFromAssembly(typeof(LibristaContext).Assembly);
-        builder.Entity<Author>()
-            .HasMany(author => author.Books)
-            .WithMany(book => book.Authors)
-            .UsingEntity<AuthorBook>();
-        builder.Entity<AuthorBook>()
-            .HasKey(ab => new { ab.AuthorId, ab.BookId });
-        builder.Entity<AuthorBook>()
-            .ToTable("AuthorBooks");
+        
+        builder.Entity<User>()
+            .HasMany(user => user.Roles)
+            .WithMany(role => role.Users)
+            .UsingEntity<UserRole>();
+
+        builder.Entity<UserRole>(entity =>
+        {
+            entity
+                .HasKey(ur => new { ur.UserId, ur.RoleId });
+            entity
+                .HasOne(ur => ur.User)
+                .WithMany()
+                .HasForeignKey(ur => ur.UserId);
+            entity
+                .HasOne(ur => ur.Role)
+                .WithMany()
+                .HasForeignKey(ur => ur.RoleId);
+        });
         
         builder.Entity<Address>(entity =>
         {
@@ -60,6 +74,7 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
 
         builder.Entity<AuthorBook>(entity =>
         {
+            entity.HasKey(ab => new { ab.AuthorId, ab.BookId });
             entity
                 .HasOne(ab => ab.Book)
                 .WithMany()

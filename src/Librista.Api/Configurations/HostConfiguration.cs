@@ -15,6 +15,7 @@ public static partial class HostConfiguration
             .AddValidators()
             .AddRequestContextTools() // HttpContextAccessor
             .AddJsonOptions()
+            .AddAuthentication() // JWT
             .AddOthers(); // other utilities
         
         return builder;
@@ -26,6 +27,7 @@ public static partial class HostConfiguration
             .UseDeveloperTools() // Swagger
             .UseExposers() // controllers
             .UseCors() // CORS
+            .UseAuthenticationMiddleware() // Authentication middleware
             .UseMiddlewares()
             .UseRequestContextTools() // HttpsRedirection
             .UseOthers() // other utilities

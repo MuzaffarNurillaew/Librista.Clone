@@ -4,6 +4,7 @@ using Librista.Domain.Entities;
 using Librista.Service.Filters;
 using Librista.Service.Interfaces;
 using Librista.Service.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Librista.Api.Controllers;
@@ -29,7 +30,7 @@ public class AddressesController(IAddressService addressService, ICountryService
 
         return Ok(mapper.Map<AddressResultDto>(address));
     }
-
+    [Authorize]
     [HttpGet]
     public async Task<ActionResult<IEnumerable<AddressResultDto>>> GetAll([FromQuery] AddressFilter filter, CancellationToken cancellationToken)
     {

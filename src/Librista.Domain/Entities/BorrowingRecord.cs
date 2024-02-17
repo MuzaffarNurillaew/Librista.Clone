@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using Librista.Domain.Commons;
-using Microsoft.AspNetCore.Identity;
 
 namespace Librista.Domain.Entities;
 
@@ -27,9 +26,4 @@ public class BorrowingRecord : IAuditable
     public DateTimeOffset? UpdatedDate { get; set; }
     public DateTimeOffset? DeletedDate { get; set; }
     public bool IsDeleted { get; set; }
-}
-
-public class User : IdentityUser<long>
-{
-    
 }

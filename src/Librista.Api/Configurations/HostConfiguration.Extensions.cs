@@ -10,6 +10,8 @@ using Librista.Domain.Entities;
 using Librista.Service.Interfaces;
 using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using JsonConverter = System.Text.Json.Serialization.JsonConverter;
@@ -34,7 +36,10 @@ public partial class HostConfiguration
             app.UseSwagger();
             app.UseSwaggerUI();
         }
-
+        else
+        {
+            app.UseHsts();
+        }
         return app;
     }
 
@@ -60,6 +65,12 @@ public partial class HostConfiguration
         return app;
     }
 
+    private static WebApplication UseAuthenticationMiddleware(this WebApplication app)
+    {
+        app.UseAuthentication();
+
+        return app;
+    }
     private static WebApplication UseOthers(this WebApplication app)
     {
         return app;
@@ -100,6 +111,36 @@ public partial class HostConfiguration
             });
         return builder;
     }
+
+    private static WebApplicationBuilder AddAuthentication(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme,
+                options => builder.Configuration.Bind("JwtSettings", options));
+        return builder;
+    }
+
+    private static WebApplicationBuilder AddIdentity(this WebApplicationBuilder builder)
+    {
+        builder.Services.AddIdentity<User, Role>(options =>
+            {
+                // password
+                options.Password.RequiredLength = 6;
+                options.Password.RequireDigit = true;
+                options.Password.RequireLowercase = true;
+                options.Password.RequireUppercase = true;
+                
+                // user
+                options.User.AllowedUserNameCharacters =
+                    "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
+                options.User.RequireUniqueEmail = true;
+            })
+            .AddEntityFrameworkStores<LibristaContext>()
+            .AddDefaultTokenProviders();
+        
+        return builder;
+    }
+
     private static WebApplicationBuilder AddCors(this WebApplicationBuilder builder)
     {
         builder.Services.AddCors(options =>
