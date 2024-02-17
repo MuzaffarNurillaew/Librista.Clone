@@ -30,6 +30,7 @@ public static partial class HostConfiguration
             .UseAuthenticationMiddleware() // Authentication middleware
             .UseMiddlewares()
             .UseRequestContextTools() // HttpsRedirection
+            .UseIdentity() // Identity api endpoints
             .UseOthers() // other utilities
             .UseStaticFiles(); // using static files: wwwroot
         

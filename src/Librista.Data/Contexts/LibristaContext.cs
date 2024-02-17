@@ -1,10 +1,20 @@
 using Librista.Domain.Entities;
 using Librista.Domain.Entities.Joinings;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace Librista.Data.Contexts;
 
-public class LibristaContext(DbContextOptions<LibristaContext> options) : DbContext(options)
+public class LibristaContext(DbContextOptions<LibristaContext> options)
+    : IdentityDbContext<User,
+        Role,
+        long,
+        IdentityUserClaim<long>,
+        UserRole,
+        IdentityUserLogin<long>,
+        IdentityRoleClaim<long>,
+        IdentityUserToken<long>>(options)
 {
     #region Tables
     public DbSet<Address> Addresses => Set<Address>();
@@ -17,9 +27,6 @@ public class LibristaContext(DbContextOptions<LibristaContext> options) : DbCont
     public DbSet<Genre> Genres => Set<Genre>();
     public DbSet<Publisher> Publishers => Set<Publisher>();
     public DbSet<AuthorBook> AuthorBooks => Set<AuthorBook>();
-    public DbSet<User> Users => Set<User>();
-    public DbSet<UserRole> UserRoles => Set<UserRole>();
-    public DbSet<Role> Roles => Set<Role>();
     #endregion
 
     protected override void OnModelCreating(ModelBuilder builder)

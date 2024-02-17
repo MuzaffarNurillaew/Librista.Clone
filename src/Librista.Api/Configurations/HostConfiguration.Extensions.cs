@@ -71,6 +71,12 @@ public partial class HostConfiguration
 
         return app;
     }
+
+    private static WebApplication UseIdentity(this WebApplication app)
+    {
+        app.MapGroup("/api/identity").MapIdentityApi<IdentityUser>();
+        return app;
+    }
     private static WebApplication UseOthers(this WebApplication app)
     {
         return app;
