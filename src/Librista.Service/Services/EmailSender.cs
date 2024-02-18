@@ -1,4 +1,3 @@
-using System.Text;
 using Librista.Service.Interfaces;
 using Librista.Service.Models.Mails;
 using MailKit.Net.Smtp;
@@ -7,19 +6,10 @@ using MimeKit;
 
 namespace Librista.Service.Services;
 
-public class EmailService(IOptions<EmailConfiguration> emailConfiguration) : IEmailService
+public class EmailService(IOptions<EmailConfiguration> emailConfiguration)
+    : IEmailService
 {
     private EmailConfiguration _emailConfiguration = emailConfiguration.Value;
-
-    public async Task SendAsync(Message message, CancellationToken cancellationToken)
-    {
-        // create email message
-        var emailMessage = CreateEmailMessage(message);
-
-        // send created message
-        await SendAsync(emailMessage, cancellationToken);
-    }
-
     private MimeMessage CreateEmailMessage(Message message)
     {
         var emailMessage = new MimeMessage();
@@ -36,7 +26,7 @@ public class EmailService(IOptions<EmailConfiguration> emailConfiguration) : IEm
         return emailMessage;
     }
 
-    private async Task SendAsync(MimeMessage message, CancellationToken cancellationToken)
+    private async Task SendAsync(MimeMessage message, CancellationToken cancellationToken = default)
     {
         using var client = new SmtpClient();
         try
@@ -59,5 +49,24 @@ public class EmailService(IOptions<EmailConfiguration> emailConfiguration) : IEm
         {
             await client.DisconnectAsync(true, cancellationToken);
         }
+    }
+
+    public async Task SendEmailAsync(string email, string subject, string htmlMessage)
+    {
+        var to = new List<InternetAddress>();
+
+        to.Add(new MailboxAddress(string.Empty, email));
+
+        var message = new Message
+        {
+            To = to,
+            Subject = subject,
+            Content = htmlMessage
+        };
+        // create email message
+        var emailMessage = CreateEmailMessage(message);
+
+        // send created message
+        await SendAsync(emailMessage);
     }
 }

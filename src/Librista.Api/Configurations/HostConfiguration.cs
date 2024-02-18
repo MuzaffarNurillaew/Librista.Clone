@@ -11,6 +11,7 @@ public static partial class HostConfiguration
             .AddDataBaseProvider() // DbContext
             .AddStorageDependencies() // Registering repositories & data related dependencies
             .AddServiceDependencies()
+            .AddIdentity()
             .AddMappers()
             .AddValidators()
             .AddRequestContextTools() // HttpContextAccessor
