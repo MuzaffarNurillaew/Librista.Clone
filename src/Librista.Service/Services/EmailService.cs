@@ -1,13 +1,15 @@
+using Librista.Domain.Entities;
 using Librista.Service.Interfaces;
 using Librista.Service.Models.Mails;
 using MailKit.Net.Smtp;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
 namespace Librista.Service.Services;
 
 public class EmailService(IOptions<EmailConfiguration> emailConfiguration)
-    : IEmailService
+    : IEmailSender<User>
 {
     private EmailConfiguration _emailConfiguration = emailConfiguration.Value;
     private MimeMessage CreateEmailMessage(Message message)
@@ -68,5 +70,20 @@ public class EmailService(IOptions<EmailConfiguration> emailConfiguration)
 
         // send created message
         await SendAsync(emailMessage);
+    }
+
+    public Task SendConfirmationLinkAsync(User user, string email, string confirmationLink)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SendPasswordResetLinkAsync(User user, string email, string resetLink)
+    {
+        throw new NotImplementedException();
+    }
+
+    public Task SendPasswordResetCodeAsync(User user, string email, string resetCode)
+    {
+        throw new NotImplementedException();
     }
 }

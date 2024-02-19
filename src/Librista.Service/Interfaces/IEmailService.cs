@@ -1,7 +1,7 @@
-using Librista.Service.Models.Mails;
-using Microsoft.AspNetCore.Identity.UI.Services;
+using Librista.Domain.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace Librista.Service.Interfaces;
 
-public interface IEmailService : IEmailSender
+public interface IEmailService: IEmailSender<User>
 { }

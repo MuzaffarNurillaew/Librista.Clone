@@ -13,7 +13,6 @@ using Librista.Service.Services;
 using Librista.Service.Validators.Utilities;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 using Newtonsoft.Json;
 using JsonConverter = System.Text.Json.Serialization.JsonConverter;
@@ -76,7 +75,8 @@ public partial class HostConfiguration
 
     private static WebApplication UseIdentity(this WebApplication app)
     {
-        app.MapGroup("/api/identity").MapIdentityApi<IdentityUser>();
+        app.MapGroup("/api/identity")
+            .MapIdentityApi<IdentityUser>();
         return app;
     }
     private static WebApplication UseOthers(this WebApplication app)
@@ -194,7 +194,7 @@ public partial class HostConfiguration
 
         // mail service
         builder.Services.Configure<EmailConfiguration>(builder.Configuration.GetSection("EmailConfiguration"));
-        builder.Services.AddScoped<IEmailSender, EmailService>();
+        builder.Services.AddTransient<IEmailSender<User>, EmailService>();
         
         return builder;
     }
